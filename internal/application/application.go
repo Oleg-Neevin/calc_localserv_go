@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"gitlab.com/Oleg_Neevin/go_calc_localserver/pkg/calculation"
+	"github.com/Oleg-Neevin/calc_localserv_go/pkg/calculation"
 )
 
 type Application struct {
