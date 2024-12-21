@@ -57,7 +57,8 @@ func CalcHandler(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "{\n  \"error\": \"%s\"\n}", err)
 		return
 	}
 	if request.Expression == "Hello world!" {
