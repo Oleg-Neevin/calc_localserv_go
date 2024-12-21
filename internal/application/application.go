@@ -61,17 +61,18 @@ func CalcHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if request.Expression == "Hello world!" {
-		http.Error(w, "{\nerror: \"It's not a bug. It's a feature\"\n}", http.StatusInternalServerError)
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprint(w, "{\n  \"error\": \"It's not a bug. It's a feature\"\n}")
 		return
 	}
 	result, err := calculation.Calc(request.Expression)
 	if err != nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)
-		fmt.Fprintf(w, "{\n  error: \"%s\"\n}", err.Error())
+		fmt.Fprintf(w, "{\n  \"error\": \"%s\"\n}", err.Error())
 	} else {
 		w.WriteHeader(http.StatusOK)
 
-		fmt.Fprintf(w, "{\n  result: \"%f\"\n}", result)
+		fmt.Fprintf(w, "{\n  \"result\": %f\n}", result)
 	}
 
 }
