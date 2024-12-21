@@ -60,16 +60,24 @@ func CalcHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	if request.Expression == "Hello world!" {
+		http.Error(w, "{\nerror: \"It's not a bug. It's a feature\"\n}", http.StatusInternalServerError)
+		return
+	}
 	result, err := calculation.Calc(request.Expression)
 	if err != nil {
-		fmt.Fprintf(w, "error: %s", err.Error())
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		fmt.Fprintf(w, "{\n  error: \"%s\"\n}", err.Error())
 	} else {
-		fmt.Fprintf(w, "result: %f", result)
+		w.WriteHeader(http.StatusOK)
+
+		fmt.Fprintf(w, "{\n  result: \"%f\"\n}", result)
 	}
 
 }
 
 func (a *Application) RunServer() error {
-	http.HandleFunc("/", CalcHandler)
+	http.HandleFunc("/api/v1/calculate", CalcHandler)
+	log.Println("Starting server on :8080")
 	return http.ListenAndServe(":8080", nil)
 }

@@ -77,6 +77,11 @@ func TestCalc(t *testing.T) {
 			expression:  "2/0",
 			expectedErr: ErrDivisionByZero,
 		},
+		{
+			name:        "hello world",
+			expression:  "hello world 2+2*2",
+			expectedErr: ErrInvalidExpression,
+		},
 	}
 
 	for _, testCase := range testCasesFail {

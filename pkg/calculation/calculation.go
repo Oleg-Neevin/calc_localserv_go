@@ -49,6 +49,9 @@ func Calc(expression string) (float64, error) {
 					break
 				}
 			}
+			// если попадаются другие символы - ошибка
+		} else {
+			return 0.0, ErrInvalidExpression
 		}
 	}
 
